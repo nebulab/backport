@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/nebulab/backport.svg?branch=master)](https://travis-ci.org/nebulab/backport)
 [![Coverage Status](https://coveralls.io/repos/github/nebulab/backport/badge.svg?branch=master)](https://coveralls.io/github/nebulab/backport?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c5705b7ed58864609452/maintainability)](https://codeclimate.com/github/nebulab/backport/maintainability)
 
 Backport helps you manage backported code with ease.
 
