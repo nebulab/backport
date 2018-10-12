@@ -1,5 +1,7 @@
 # Backport
 
+[![Build Status](https://travis-ci.org/nebulab/backport.svg?branch=master)](https://travis-ci.org/nebulab/backport)
+
 Backport helps you manage backported code with ease.
 
 ## Installation
