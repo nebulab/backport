@@ -1,6 +1,7 @@
 # Backport
 
 [![Build Status](https://travis-ci.org/nebulab/backport.svg?branch=master)](https://travis-ci.org/nebulab/backport)
+[![Coverage Status](https://coveralls.io/repos/github/nebulab/backport/badge.svg?branch=master)](https://coveralls.io/github/nebulab/backport?branch=master)
 
 Backport helps you manage backported code with ease.
 
