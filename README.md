@@ -1,8 +1,6 @@
 # Backport
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/backport`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Backport helps you manage backported code with ease.
 
 ## Installation
 
@@ -22,17 +20,64 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Backport is used by registering checks and creating notices (which are only displayed if a certain 
+check returns true). A check can be either _static_ (when its result is defined when the check
+is defined) or _dynamic_ (when its result is computed every time a notice is defined). 
+
+The following examples illustrates both types of checks:
+
+```ruby
+# This is a dynamic check: it accepts an argument and determines
+# whether the Rails' version is greater than or equal to the argument. 
+Backport.register_check(:rails_version_gte) do |version|
+  Rails.gem_version > Gem::Version.new(version)
+end
+
+# You can also define dynamic checks by passing a proc as the
+# second argument to register_check.
+Backport.register_check(
+  :rails_version_gte, 
+  -> (version) { Rails.gem_version > Gem::Version.new(version) }
+)
+
+# This is a static check: its value is defined when the check is defined.
+Backport.register_check(:rails5, Rails.gem_version >= Gem::Version.new('5.0.0')) 
+```
+
+And this is how you use both types of checks:
+
+```ruby
+def my_method
+  Backport.notice('This method is not needed in Rails 5', :rails5)
+
+  # ...
+end
+
+def my_other_method
+  Backport.notice('This method is not needed since Rails 5.1', :rails_version_gte, '5.1.0')
+
+  # ...
+end
+```
+
+That's it!
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run 
+the tests. You can also run `bin/console` for an interactive prompt that will allow you to 
+experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new 
+version, update the version number in `version.rb`, and then run `bundle exec rake release`, which 
+will create a git tag for the version, push git commits and tags, and push the `.gem` file to 
+[rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/backport. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/backport. This 
+project is intended to be a safe, welcoming space for collaboration, and contributors are expected 
+to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -40,4 +85,5 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Backport project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/backport/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Backport project’s codebases, issue trackers, chat rooms and mailing 
+lists is expected to follow the [code of conduct](https://github.com/nebulab/backport/blob/master/CODE_OF_CONDUCT.md).

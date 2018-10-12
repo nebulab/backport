@@ -1,0 +1,22 @@
+require: rubocop-rspec
+
+Metrics/LineLength:
+  Max: 100
+
+Metrics/BlockLength:
+  Enabled: false
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/MessageSpies:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: keyword
