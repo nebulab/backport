@@ -52,13 +52,13 @@ And this is how you use both types of checks:
 
 ```ruby
 def my_method
-  Backport.notice('This method is not needed in Rails 5', :rails5)
+  Backport.notify('This method is not needed in Rails 5', :rails5)
 
   # ...
 end
 
 def my_other_method
-  Backport.notice('This method is not needed since Rails 5.1', :rails_version_gte, '5.1.0')
+  Backport.notify('This method is not needed since Rails 5.1', :rails_version_gte, '5.1.0')
 
   # ...
 end
