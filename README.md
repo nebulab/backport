@@ -64,7 +64,38 @@ def my_other_method
 end
 ```
 
-That's it!
+You can also use `#notify!` instead of `#notify` if you want to raise an exception rather than
+using ActiveSupport's default deprecation behavior.
+
+### RSpec integration
+
+Backport also allows you to deprecate RSpec blocks, which is very useful when you backport both a
+piece of code _and_ its tests.
+
+To enable the RSpec integration, add the following to your `spec_helper.rb` (after requiring RSpec):
+
+```ruby
+require 'backport/rspec'
+```
+
+Now, you can do this:
+
+```ruby
+RSpec.describe BackportedClass, backport: [
+  'This test is not needed as of 2.0', 
+  :backported_library_gte, 
+  '2.0'
+] do
+  it 'some test here' do
+    # ...
+  end
+end
+```
+
+If the `backported_library_gte` check with `2.0` as its argument returns `true`, an
+`ActiveSupport::DeprecationException` will be raised and the test will fail.
+
+Note that the `backport` tag accepts the same exact arguments as the `#notify` method.
 
 ## Development
 

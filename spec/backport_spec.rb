@@ -130,4 +130,30 @@ RSpec.describe Backport do
       end
     end
   end
+
+  describe '#notify!' do
+    before do
+      subject.register_check(:test_check, check_result)
+    end
+
+    context 'when the related checks returns true' do
+      let(:check_result) { true }
+
+      it 'raises a deprecation error' do
+        expect do
+          subject.notify!('deprecation message', :test_check)
+        end.to raise_error(ActiveSupport::DeprecationException)
+      end
+    end
+
+    context 'when the related check returns false' do
+      let(:check_result) { false }
+
+      it 'does not raise any errors' do
+        expect do
+          subject.notify!('deprecation message', :test_check)
+        end.not_to raise_error
+      end
+    end
+  end
 end
