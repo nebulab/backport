@@ -29,12 +29,17 @@ module Backport
 
     # Notifies a backport notice when a check results true.
     #
+    # This will use whatever behavior was set for ActiveSupport::Deprecation (the
+    # default behavior prints the deprecation message to stderr).
+    #
     # Any additional arguments will be passed to the check if it's a block or proc.
     #
     # @param message [String] backport message
     # @param check [Symbol] name of the check
     #
     # @raise [ArgumentError] if an invalid check is specified
+    #
+    # @see https://api.rubyonrails.org/classes/ActiveSupport/Deprecation/Behavior.html
     def notify(message, check, *args)
       return unless run_check(check, *args)
 
@@ -45,6 +50,27 @@ module Backport
                       end
 
       ActiveSupport::Deprecation.warn(message, caller_method)
+    end
+
+    # Raises an +ActiveSupport::DeprecationException+ if a check results true.
+    #
+    # This will force the +:raise+ behavior and then resume the previous behavior
+    # after the execution of the method.
+    #
+    # Any additional arguments will be passed to the check if it's a block or proc.
+    #
+    # @param message [String] backport message
+    # @param check [Symbol] name of the check
+    #
+    # @raise [ActiveSupport::DeprecationException] if the check results true
+    #
+    # @see https://api.rubyonrails.org/classes/ActiveSupport/Deprecation/Behavior.html
+    def notify!(message, check, *args)
+      previous_behavior = ActiveSupport::Deprecation.behavior
+      ActiveSupport::Deprecation.behavior = :raise
+      notify(message, check, *args)
+    ensure
+      ActiveSupport::Deprecation.behavior = previous_behavior
     end
 
     private
